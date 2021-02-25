@@ -1,0 +1,40 @@
+version: '3.5'
+
+services:
+  localstack:
+    image: "localstack/localstack:${LS_VERSION}"
+    depends_on:
+      - database
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+      - "${PORT_WEB_UI-8080}:${PORT_WEB_UI-8080}"
+    environment:
+      - SERVICES=ec2,s3,secretsmanager,apigateway,lambda,iam,dynamodb
+      - DEBUG=${DEBUG- }
+      - DATA_DIR=${DATA_DIR- }
+      - PORT_WEB_UI=${PORT_WEB_UI- }
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR- docker-reuse}
+      # Set this to the name of the directory you're project is in suffixed with _default
+      # This is the default network name created by Docker compose
+      - LAMBDA_DOCKER_NETWORK=${CURRENT_DIR}_default
+      - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+
+  database:
+    image: "postgres" # use latest official postgres version
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./db/db.env # configure postgres
+    volumes:
+      - ./db/localapi_blueprint.sql:/usr/local/db/localapi_blueprint.sql
+      - ./db/1-bpdb-setup.sh:/docker-entrypoint-initdb.d/1-bpdb-setup.sh
+      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+
+volumes:
+  database-data: # named volumes can be managed easier using docker-compose

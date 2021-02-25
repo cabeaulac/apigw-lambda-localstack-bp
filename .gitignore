@@ -1,0 +1,11 @@
+*.zip
+/bin/
+/node_modules/
+bastion/temp*
+temp
+temp.pub
+.DS_Store
+.pulumi
+test-input.json
+Pulumi*
+venv

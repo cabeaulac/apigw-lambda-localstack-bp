@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "outDir": "bin",
+        "target": "es2016",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "pretty": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitReturns": true,
+        "forceConsistentCasingInFileNames": true,
+        "rootDir": "src"
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules/**"]
+    // "files": [
+    //     "index.ts"
+    // ],
+    // "references": [
+    //     { 
+    //         //"path": "../xo-shared-iac",
+    //         // add 'prepend' if you want to include the referenced project in your output file
+    //         // "prepend": true, 
+    //     }
+    // ]    
+}
